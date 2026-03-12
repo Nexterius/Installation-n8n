@@ -3,3 +3,10 @@
 # Script complet d'installation N8N sur Debian 13
 
 # Version test - Production-not ready - non Testé et pas validé
+
+
+echo "🔄 ETAPE 1/4: PREPARATION DU SYSTEME"
+echo "======================================================================="
+
+apt update && apt update -y
+apt install sudo
