@@ -10,8 +10,11 @@ Ce script automatise l'installation et la configuration de n8n afin d'obtenir ra
 
 ## Méthode classique (recommandée)
 Se connecter avec l'utilisateur root
+
 apt install sudo
+
 apt install git
+
 usermod -aG sudo ##utilisateur
 
 Se reconnecter avec l'utilisateur
