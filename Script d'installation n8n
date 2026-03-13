@@ -22,7 +22,7 @@ apt install ca-certificates curl gnupg -y
 install -m 0755 -d /etc/apt/keyrings
 
 # Téléchargement et enregistrement la clé GPG officielle Docker
-curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
 
 # Ajout du dépôt officiel Docker
 echo \
