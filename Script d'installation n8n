@@ -1,4 +1,5 @@
 #!/bin/bash
+export DEBIAN_FRONTEND=noninteractive
 
 # Script complet d'installation N8N sur Debian 13
 
@@ -108,7 +109,7 @@ EOF
 # Lancement de N8N
 echo "🚀 Lancement de N8N"
 cd /srv/n8n
-sleep 2
+sleep 5
 docker compose up -d
 
 IP=$(hostname -I | awk '{print $1}')
