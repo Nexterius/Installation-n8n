@@ -9,7 +9,7 @@ echo "🔄 Mise à jour et installation des prérequis "
 echo "======================================================================="
 
 # Maj systeme
-apt update && apt update -y
+apt update && apt upgrade -y
 
 # Ajout de l’utilisateur sft au groupe sudoers
 usermod -aG sudo nom_de_l'utilisateur
