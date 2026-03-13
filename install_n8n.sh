@@ -53,7 +53,7 @@ echo "📦 Installation de Docker Engine + Compose "
 # Installation de Docker Engine + Compose
 apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
 sudo docker --version
-systemctl status docker
+systemctl is-active docker
 
 # Démarrage de Docker
 systemctl enable docker
@@ -103,7 +103,6 @@ EOF
 
 # Création du docker-compose.yml
 cat <<EOF > /srv/n8n/docker-compose.yml
-version: "3.8"
 
 services:
   n8n:
@@ -131,7 +130,7 @@ echo "N8N accessible sur : http://$IP:5678"
 echo "======================================================================="
 
 # Outil terminal pour lire,filtrer et transformer des données JSON
-apt install jq
+apt install jq -y
 
 # Installation d’Ollama
 curl -fsSL https://ollama.com/install.sh | sh
@@ -139,11 +138,8 @@ curl -fsSL https://ollama.com/install.sh | sh
 # Téléchargement de l'IA Qwen 3:8B
 ollama pull qwen3:8b
 
-# Test du fonctionnement de l'IA qwen3:8b
-ollama run qwen3:8b
-expliques moi docker en 2 phrases
-/bye
-
+# Envoie une requête à l’API Ollama pour générer une réponse avec le modèle qwen3:8b,
+# puis extrait et affiche uniquement le texte de la réponse grâce à jq.
 curl -s http://localhost:11434/api/generate \
 -H "Content-Type: application/json" \
 -d '{
@@ -155,6 +151,10 @@ curl -s http://localhost:11434/api/generate \
 
 # Modification du fichier docker-compose.yml
 sed -i '/restart: always/a\    extra_hosts:\n      - "host.docker.internal:host-gateway"' /srv/n8n/docker-compose.yml
+
+# Redémarrage du conteneur Docker
+docker compose down
+docker compose up -d
 
 # Modifier le service Ollama
 FILE="/etc/systemd/system/ollama.service"
@@ -173,8 +173,7 @@ ss -tulpen | grep 11434
 curl http://$(ip -4 addr show docker0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}'):11434/api/tags
 
 # Vérifie que l’API Ollama est accessible depuis le conteneur n8n via l’hôte Docker.
-docker exec -it n8n-n8n-1 sh
-wget -qO- http://host.docker.internal:11434/api/tags
+docker exec n8n-n8n-1 wget -qO- http://host.docker.internal:11434/api/tags
 
 
 
