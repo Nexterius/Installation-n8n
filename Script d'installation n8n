@@ -17,8 +17,8 @@ echo "======================================================================="
 # Maj systeme
 apt update && apt upgrade -y
 
-# Ajout de l’utilisateur sft au groupe sudoers
-usermod -aG sudo nom_de_l'utilisateur
+# Ajout de l’utilisateur tony au groupe sudoers
+usermod -aG sudo tony
 
 
 # Installation des prérequis
@@ -47,19 +47,21 @@ echo "📦 Installation de Docker Engine + Compose "
 apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
 
 # Autoriser l’utilisateur à utiliser Docker sans sudo (ajout au groupe docker)
-usermod -aG docker nom_de_l'utilisateur
+usermod -aG docker tony
 
 # Création du dossier du service
 mkdir -p /srv/n8n
 
-# Don des droits d’accès du dossier à l’utilisateur nom_de_l'utilisateur
-chown -R nom_de_l'utilisateur:nom_de_l'utilisateur /srv/n8n
+# Don des droits d’accès du dossier à l’utilisateur tony
+chown -R tony:tony /srv/n8n
 
 # Création du dossier de données persistantes
 mkdir -p /srv/n8n/n8n_data
 
 # Sauvegarde du .env existant
-cp /srv/n8n/.env /srv/n8n/.env.backup
+if [ -f /srv/n8n/.env ]; then
+  cp /srv/n8n/.env /srv/n8n/.env.backup
+fi
 
 # Génération de la clé
 KEY=$(openssl rand -hex 32)
@@ -98,16 +100,12 @@ chown -R 1000:1000 /srv/n8n/n8n_data
 cd /srv/n8n
 docker compose up -d
 
+IP=$(hostname -I | awk '{print $1}')
+
 echo "======================================================================="
 echo "Installation terminée"
 echo "N8N accessible sur : http://$IP:5678"
 echo "======================================================================="
-
-
-
-
-
-
 
 
 
