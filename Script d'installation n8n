@@ -1,6 +1,11 @@
 #!/bin/bash
 export DEBIAN_FRONTEND=noninteractive
 
+if [ -z "$SUDO_USER" ]; then
+  echo "Veuillez lancer le script avec sudo depuis un utilisateur normal."
+  exit 1
+fi
+
 # Script complet d'installation N8N sur Debian 13
 
 # Version test - Production-not ready - non Testé et pas validé
@@ -17,10 +22,6 @@ echo "======================================================================="
 
 # Maj systeme
 apt update && apt upgrade -y
-
-# Ajout de l’utilisateur tony au groupe sudoers
-usermod -aG sudo tony
-
 
 # Installation des prérequis
 apt install ca-certificates curl gnupg openssl -y
@@ -40,8 +41,6 @@ tee /etc/apt/sources.list.d/docker.list > /dev/null
 # Mise à jour de la liste des paquets
 apt update
 
-
-
 echo "📦 Installation de Docker Engine + Compose "
 
 # Installation de Docker Engine + Compose
@@ -54,7 +53,7 @@ systemctl start docker
 echo "✅ Docker installé avec succès"
 
 # Autoriser l’utilisateur à utiliser Docker sans sudo (ajout au groupe docker)
-usermod -aG docker tony
+usermod -aG docker $SUDO_USER
 
 echo "📁 Création de l'environnement N8N"
 echo "======================================================================="
@@ -62,8 +61,8 @@ echo "======================================================================="
 # Création du dossier du service
 mkdir -p /srv/n8n
 
-# Don des droits d’accès du dossier à l’utilisateur tony
-chown -R tony:tony /srv/n8n
+# Don des droits d’accès du dossier à l’utilisateur
+chown -R $SUDO_USER:$SUDO_USER /srv/n8n
 
 # Création du dossier de données persistantes
 mkdir -p /srv/n8n/n8n_data
