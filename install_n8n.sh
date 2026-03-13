@@ -158,17 +158,23 @@ sed -i '/restart: always/a\    extra_hosts:\n      - "host.docker.internal:host-
 
 # Modifier le service Ollama
 FILE="/etc/systemd/system/ollama.service"
-sudo sed -i '/ExecStart=\/usr\/local\/bin\/ollama serve/i Environment="OLLAMA_HOST=0.0.0.0"' $FILE
+sed -i '/ExecStart=\/usr\/local\/bin\/ollama serve/i Environment="OLLAMA_HOST=0.0.0.0"' $FILE
 
 # Recharger systemd
-sudo systemctl daemon-reload
+systemctl daemon-reload
 
 # Redémarrer Ollama
-sudo systemctl restart ollama
+systemctl restart ollama
 
+# Vérification de l'ouverture du port 11434
+ss -tulpen | grep 11434
 
+# Vérifie que l’API Ollama est accessible depuis le réseau Docker via la passerelle.
+curl http://$(ip -4 addr show docker0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}'):11434/api/tags
 
-
+# Vérifie que l’API Ollama est accessible depuis le conteneur n8n via l’hôte Docker.
+docker exec -it n8n-n8n-1 sh
+wget -qO- http://host.docker.internal:11434/api/tags
 
 
 
