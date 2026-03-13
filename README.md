@@ -16,7 +16,7 @@ apt install sudo
 
 apt install git
 
-usermod -aG sudo ##utilisateur
+usermod -aG sudo nom_utilisateur
 
 Se reconnecter avec l'utilisateur
 
