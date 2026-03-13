@@ -63,6 +63,7 @@ echo "✅ Docker installé avec succès"
 
 # Autoriser l’utilisateur à utiliser Docker sans sudo (ajout au groupe docker)
 usermod -aG docker $SUDO_USER
+echo "⚠️ Déconnectez-vous puis reconnectez-vous pour utiliser Docker sans sudo."
 
 echo "📁 Création de l'environnement N8N"
 echo "======================================================================="
@@ -137,6 +138,7 @@ curl -fsSL https://ollama.com/install.sh | sh
 # Activation & démarrage d'Ollama
 systemctl enable ollama
 systemctl start ollama
+sleep 3
 
 # Téléchargement de l'IA Qwen 3:8B
 ollama pull qwen3:8b
@@ -163,6 +165,7 @@ docker compose up -d
 
 # Modifier le service Ollama
 FILE="/etc/systemd/system/ollama.service"
+grep -q OLLAMA_HOST $FILE || \
 sed -i '/ExecStart=\/usr\/local\/bin\/ollama serve/i Environment="OLLAMA_HOST=0.0.0.0"' $FILE
 
 # Recharger systemd
