@@ -54,4 +54,10 @@ Le script installe automatiquement :
 # ⚠️ Notes
 
 * Le script doit être exécuté avec **sudo**
-* L'installati
+L'installation peut prendre plusieurs minutes
+
+Testé sur Debian 13 core
+
+📜 Licence
+
+Projet open-source. Utilisation libre.
