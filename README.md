@@ -1,63 +1,83 @@
-# Installation automatique de n8n (Debian + Docker)
+# n8n Automatic Installation Script (Debian 13 + Docker)
 
-Script permettant d’installer **n8n self-hosted** automatiquement sur **Debian 13 core** avec **Docker**.
+Script permettant d'installer automatiquement **n8n self-hosted** sur **Debian 13** avec **Docker**.
+
+Ce script automatise l'installation et la configuration de n8n afin d'obtenir rapidement un environnement fonctionnel.
 
 ---
 
-# 🚀 Installation rapide
+# 🚀 Installation
 
-### 1. Cloner le repository
+## Méthode classique (recommandée)
 
-```bash
+Cloner le repository puis lancer le script.
+
 git clone https://github.com/Nexterius/Installation-n8n.git
-```
-
-### 2. Aller dans le dossier
-
-```bash
 cd Installation-n8n
-```
+chmod +x install_n8n.sh
+sudo ./install_n8n.sh
 
-### 3. Rendre le script exécutable
+---
 
-```bash
-chmod +x "Script d'installation n8n"
-```
+## ⚡ Installation en une seule commande
 
-### 4. Lancer l'installation
+Vous pouvez également installer n8n directement avec une seule commande :
 
-```bash
-sudo ./"Script d'installation n8n"
-```
+bash <(curl -s https://raw.githubusercontent.com/Nexterius/Installation-n8n/main/install_n8n.sh)
 
 ---
 
 # 📋 Prérequis
 
-* Debian 13
-* accès **sudo**
-* connexion internet
+- Debian 13
+- Accès **sudo**
+- Connexion internet
+- Serveur propre recommandé
 
 ---
 
 # ⚙️ Ce que fait le script
 
-Le script installe automatiquement :
+Le script effectue automatiquement :
 
-* Docker
-* Docker Compose
-* n8n (container Docker)
-* configuration de base du serveur
+- Mise à jour du système
+- Installation de Docker
+- Installation de Docker Compose
+- Installation de n8n via Docker
+- Configuration de base du service
+- Démarrage automatique du conteneur
 
 ---
 
-# ⚠️ Notes
+# 🐳 Technologies utilisées
 
-* Le script doit être exécuté avec **sudo**
-L'installation peut prendre plusieurs minutes
+- Docker
+- Docker Compose
+- n8n (self-hosted)
 
-Testé sur Debian 13 core
+---
 
-📜 Licence
+# 📦 n8n
 
-Projet open-source. Utilisation libre.
+n8n est une plateforme d'automatisation open-source permettant de connecter différentes applications et services.
+
+Site officiel :
+https://n8n.io
+
+---
+
+# ⚠️ Avertissement
+
+Ce script modifie la configuration du système.
+
+Il est recommandé de :
+- l'exécuter sur un serveur neuf
+- vérifier le script avant utilisation
+- tester dans un environnement de développement
+
+---
+
+# 📜 Licence
+
+Projet open-source.  
+Utilisation libre.
