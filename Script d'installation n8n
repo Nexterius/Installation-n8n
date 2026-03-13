@@ -6,6 +6,8 @@ if [ -z "$SUDO_USER" ]; then
   exit 1
 fi
 
+set -e
+
 # Script complet d'installation N8N sur Debian 13
 
 # Version test - Production-not ready - non Testé et pas validé
