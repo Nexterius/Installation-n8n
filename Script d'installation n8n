@@ -5,6 +5,12 @@
 # Version test - Production-not ready - non Testé et pas validé
 
 
+if [ "$EUID" -ne 0 ]; then
+  echo "Veuillez lancer le script en root."
+  exit
+fi
+
+
 echo "🔄 Mise à jour et installation des prérequis "
 echo "======================================================================="
 
@@ -50,11 +56,24 @@ mkdir -p /srv/n8n
 chown -R nom_de_l'utilisateur:nom_de_l'utilisateur /srv/n8n
 
 # Création du dossier de données persistantes
-mkdir /srv/n8n/n8n_data
+mkdir -p /srv/n8n/n8n_data
 
-# Génération d’une clé aléatoire & création du fichier de configuration des variables d’environnement 
+# Sauvegarde du .env existant
+cp /srv/n8n/.env /srv/n8n/.env.backup
+
+# Génération de la clé
 KEY=$(openssl rand -hex 32)
-echo "N8N_ENCRYPTION_KEY=$KEY" > /srv/n8n/.env
+
+# Création du nouveau .env
+cat <<EOF > /srv/n8n/.env
+N8N_ENCRYPTION_KEY=$KEY
+N8N_SECURE_COOKIE=false
+
+N8N_HOST=localhost
+N8N_PORT=5678
+N8N_PROTOCOL=http
+WEBHOOK_URL=http://localhost:8080/
+EOF
 
 # Création du docker-compose.yml
 cat <<EOF > /srv/n8n/docker-compose.yml
@@ -72,11 +91,17 @@ services:
       - ./n8n_data:/home/node/.n8n
 EOF
 
+# Attribution des permissions sur le dossier /srv/n8n/n8n_data
+chown -R 1000:1000 /srv/n8n/n8n_data
 
+# Lancement de N8N
+cd /srv/n8n
+docker compose up -d
 
-
-
-
+echo "======================================================================="
+echo "Installation terminée"
+echo "N8N accessible sur : http://$IP:5678"
+echo "======================================================================="
 
 
 
