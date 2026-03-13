@@ -13,8 +13,8 @@ if [ -z "$SUDO_USER" ]; then
   exit 1
 fi
 
-# Active le mode "exit on error".
-set -e
+# Active le mode strict bash
+set -euo pipefail
 
 # Script complet d'installation N8N sur Debian 13
 
@@ -63,7 +63,6 @@ echo "✅ Docker installé avec succès"
 
 # Autoriser l’utilisateur à utiliser Docker sans sudo (ajout au groupe docker)
 usermod -aG docker $SUDO_USER
-groups
 
 echo "📁 Création de l'environnement N8N"
 echo "======================================================================="
@@ -135,6 +134,10 @@ apt install jq -y
 # Installation d’Ollama
 curl -fsSL https://ollama.com/install.sh | sh
 
+# Activation & démarrage d'Ollama
+systemctl enable ollama
+systemctl start ollama
+
 # Téléchargement de l'IA Qwen 3:8B
 ollama pull qwen3:8b
 
@@ -150,9 +153,11 @@ curl -s http://localhost:11434/api/generate \
 
 
 # Modification du fichier docker-compose.yml
+grep -q host.docker.internal /srv/n8n/docker-compose.yml || \
 sed -i '/restart: always/a\    extra_hosts:\n      - "host.docker.internal:host-gateway"' /srv/n8n/docker-compose.yml
 
 # Redémarrage du conteneur Docker
+cd /srv/n8n
 docker compose down
 docker compose up -d
 
