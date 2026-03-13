@@ -22,7 +22,7 @@ usermod -aG sudo tony
 
 
 # Installation des prérequis
-apt install ca-certificates curl gnupg -y
+apt install ca-certificates curl gnupg openssl -y
 
 # Ajout de la clé officielle Docker
 install -m 0755 -d /etc/apt/keyrings
@@ -105,14 +105,10 @@ services:
       - ./n8n_data:/home/node/.n8n
 EOF
 
-# Démarrage de Docker
-systemctl enable docker
-systemctl start docker
-
 # Lancement de N8N
 echo "🚀 Lancement de N8N"
 cd /srv/n8n
-docker compose pull
+sleep 2
 docker compose up -d
 
 IP=$(hostname -I | awk '{print $1}')
