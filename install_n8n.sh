@@ -130,9 +130,49 @@ echo "Installation terminée"
 echo "N8N accessible sur : http://$IP:5678"
 echo "======================================================================="
 
+# Outil terminal pour lire,filtrer et transformer des données JSON
+apt install jq
 
 # Installation d’Ollama
 curl -fsSL https://ollama.com/install.sh | sh
+
+# Téléchargement de l'IA Qwen 3:8B
+ollama pull qwen3:8b
+
+# Test du fonctionnement de l'IA qwen3:8b
+ollama run qwen3:8b
+expliques moi docker en 2 phrases
+/bye
+
+curl -s http://localhost:11434/api/generate \
+-H "Content-Type: application/json" \
+-d '{
+  "model": "qwen3:8b",
+  "prompt": "explique ce qu'est docker en une phrase",
+  "stream": false
+}' | jq -r '.response'
+
+
+# Modification du fichier docker-compose.yml
+sed -i '/restart: always/a\    extra_hosts:\n      - "host.docker.internal:host-gateway"' /srv/n8n/docker-compose.yml
+
+# Modifier le service Ollama
+FILE="/etc/systemd/system/ollama.service"
+sudo sed -i '/ExecStart=\/usr\/local\/bin\/ollama serve/i Environment="OLLAMA_HOST=0.0.0.0"' $FILE
+
+# Recharger systemd
+sudo systemctl daemon-reload
+
+# Redémarrer Ollama
+sudo systemctl restart ollama
+
+
+
+
+
+
+
+
 
 
 
