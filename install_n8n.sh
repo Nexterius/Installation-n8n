@@ -1,11 +1,19 @@
 #!/bin/bash
+
+# Définit le mode d'installation des paquets Debian en "non interactif".
 export DEBIAN_FRONTEND=noninteractive
 
+# Vérifie que le script est exécuté avec sudo depuis un utilisateur normal.
+# La variable $SUDO_USER est définie uniquement lorsqu'un utilisateur lance une
+# commande avec sudo. Si elle est vide, cela signifie que le script est lancé
+# directement en root ou sans sudo.
+# Dans ce cas, le script s'arrête pour éviter des comportements imprévus.
 if [ -z "$SUDO_USER" ]; then
   echo "Veuillez lancer le script avec sudo depuis un utilisateur normal."
   exit 1
 fi
 
+# Active le mode "exit on error".
 set -e
 
 # Script complet d'installation N8N sur Debian 13
@@ -23,15 +31,19 @@ apt install ca-certificates curl gnupg openssl -y
 
 # Ajout de la clé officielle Docker
 install -m 0755 -d /etc/apt/keyrings
+ls -ld /etc/apt/keyrings
 
 # Téléchargement et enregistrement la clé GPG officielle Docker
 curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg 2>/dev/null || true
+ls -l /etc/apt/keyrings/docker.gpg
 
 # Ajout du dépôt officiel Docker
 echo \
   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian \
   $(. /etc/os-release && echo $VERSION_CODENAME) stable" | \
 tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+cat /etc/apt/sources.list.d/docker.list
 
 # Mise à jour de la liste des paquets
 apt update
@@ -40,6 +52,8 @@ echo "📦 Installation de Docker Engine + Compose "
 
 # Installation de Docker Engine + Compose
 apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
+sudo docker --version
+systemctl status docker
 
 # Démarrage de Docker
 systemctl enable docker
@@ -49,15 +63,18 @@ echo "✅ Docker installé avec succès"
 
 # Autoriser l’utilisateur à utiliser Docker sans sudo (ajout au groupe docker)
 usermod -aG docker $SUDO_USER
+groups
 
 echo "📁 Création de l'environnement N8N"
 echo "======================================================================="
 
 # Création du dossier du service
 mkdir -p /srv/n8n
+ls -ld /srv/n8n
 
 # Don des droits d’accès du dossier à l’utilisateur
 chown -R $SUDO_USER:$SUDO_USER /srv/n8n
+ls -ld /srv/n8n
 
 # Création du dossier de données persistantes
 mkdir -p /srv/n8n/n8n_data
@@ -112,6 +129,10 @@ echo "======================================================================="
 echo "Installation terminée"
 echo "N8N accessible sur : http://$IP:5678"
 echo "======================================================================="
+
+
+# Installation d’Ollama
+curl -fsSL https://ollama.com/install.sh | sh
 
 
 
