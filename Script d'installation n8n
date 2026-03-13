@@ -46,8 +46,13 @@ echo "📦 Installation de Docker Engine + Compose "
 # Installation de Docker Engine + Compose
 apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
 
+echo "✅ Docker installé avec succès"
+
 # Autoriser l’utilisateur à utiliser Docker sans sudo (ajout au groupe docker)
 usermod -aG docker tony
+
+echo "📁 Création de l'environnement N8N"
+echo "======================================================================="
 
 # Création du dossier du service
 mkdir -p /srv/n8n
@@ -63,7 +68,10 @@ if [ -f /srv/n8n/.env ]; then
   cp /srv/n8n/.env /srv/n8n/.env.backup
 fi
 
+echo "🔑 Génération de la clé de chiffrement N8N"
+
 # Génération de la clé
+apt install ca-certificates curl gnupg openssl -y
 KEY=$(openssl rand -hex 32)
 
 # Création du nouveau .env
@@ -93,11 +101,19 @@ services:
       - ./n8n_data:/home/node/.n8n
 EOF
 
+# Démarrage de Docker
+systemctl enable docker
+systemctl start docker
+
+echo "🔧 Correction des permissions du volume N8N"
+
 # Attribution des permissions sur le dossier /srv/n8n/n8n_data
 chown -R 1000:1000 /srv/n8n/n8n_data
 
 # Lancement de N8N
+echo "🚀 Lancement de N8N"
 cd /srv/n8n
+docker compose pull
 docker compose up -d
 
 IP=$(hostname -I | awk '{print $1}')
@@ -106,8 +122,6 @@ echo "======================================================================="
 echo "Installation terminée"
 echo "N8N accessible sur : http://$IP:5678"
 echo "======================================================================="
-
-
 
 
 
