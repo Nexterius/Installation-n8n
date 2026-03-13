@@ -13,6 +13,7 @@ Ce script automatise l'installation et la configuration complète afin d'obtenir
 Se connecter avec l'utilisateur root :
 
 apt install -y sudo git
+
 usermod -aG sudo nom_utilisateur
 
 Se reconnecter ensuite avec l'utilisateur.
