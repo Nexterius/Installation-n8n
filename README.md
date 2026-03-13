@@ -9,6 +9,7 @@ Ce script automatise l'installation et la configuration de n8n afin d'obtenir ra
 # 🚀 Installation
 
 ## Méthode classique (recommandée)
+
 Se connecter avec l'utilisateur root
 
 apt install sudo
@@ -18,11 +19,15 @@ apt install git
 usermod -aG sudo ##utilisateur
 
 Se reconnecter avec l'utilisateur
+
 Cloner le repository puis lancer le script.
 
 sudo git clone https://github.com/Nexterius/Installation-n8n.git
+
 cd Installation-n8n
+
 sudo chmod +x install_n8n.sh
+
 sudo ./install_n8n.sh
 
 ---
