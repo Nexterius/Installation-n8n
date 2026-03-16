@@ -149,7 +149,7 @@ curl -s http://localhost:11434/api/generate \
 -H "Content-Type: application/json" \
 -d '{
   "model": "qwen3:8b",
-  "prompt": "explique ce qu'est docker en une phrase",
+  "prompt": "explique ce qu est docker en une phrase",
   "stream": false
 }' | jq -r '.response'
 
