@@ -99,6 +99,7 @@ N8N_HOST=localhost
 N8N_PORT=5678
 N8N_PROTOCOL=http
 WEBHOOK_URL=http://localhost:8080/
+N8N_DEFAULT_TIMEOUT=7200000
 EOF
 
 # Création du docker-compose.yml
