@@ -187,6 +187,8 @@ docker exec n8n-n8n-1 wget -qO- http://host.docker.internal:11434/api/tags
 
 echo "======================================================================="
 echo "RAPPEL"
+echo "Utiliser un tunnel SSH : Tunnel SSH"
+echo "ssh -L 8080:localhost:5678 utilisateur@ip_du_serveur"
 echo "N8N accessible sur : http://localhost:8080"
 echo "======================================================================="
 
