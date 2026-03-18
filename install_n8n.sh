@@ -126,7 +126,7 @@ IP=$(hostname -I | awk '{print $1}')
 
 echo "======================================================================="
 echo "Installation terminée"
-echo "N8N accessible sur : http://$IP:5678"
+echo "N8N accessible sur : http://localhost:8080"
 echo "======================================================================="
 
 # Outil terminal pour lire,filtrer et transformer des données JSON
@@ -185,7 +185,10 @@ docker exec n8n-n8n-1 wget -qO- http://host.docker.internal:11434/api/tags
 
 
 
-
+echo "======================================================================="
+echo "RAPPEL"
+echo "N8N accessible sur : http://localhost:8080"
+echo "======================================================================="
 
 
 
