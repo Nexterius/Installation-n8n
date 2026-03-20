@@ -115,9 +115,7 @@ N8N_DEFAULT_TIMEOUT=7200000
 - Installation d’Ollama via le script officiel
 - Activation du service au démarrage
 - Démarrage du service
-- Téléchargement du modèle :
-
-qwen3:8b
+- Téléchargement du modèle : qwen3:8b
 
 - Test local de génération via l’API Ollama
 
