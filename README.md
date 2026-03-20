@@ -149,9 +149,13 @@ Le script effectue plusieurs vérifications à la fin de l’installation :
 Le script crée l’environnement suivant :
 
 /srv/n8n
+
 ├── .env
+
 ├── .env.backup (si un .env existait déjà)
+
 ├── docker-compose.yml
+
 └── n8n_data/
 
 ---
