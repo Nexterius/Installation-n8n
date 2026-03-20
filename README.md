@@ -247,15 +247,25 @@ Le script génère le `docker-compose.yml` suivant :
 
 services:
   n8n:
+  
     image: n8nio/n8n:latest
+    
     restart: always
+    
     extra_hosts:
+    
       - "host.docker.internal:host-gateway"
+      
     ports:
+    
       - "5678:5678"
+      
     env_file:
+    
       - .env
+      
     volumes:
+    
       - ./n8n_data:/home/node/.n8n
 
 ---
