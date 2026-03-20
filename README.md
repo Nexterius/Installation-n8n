@@ -13,14 +13,19 @@ Ce script automatise l’installation et une première configuration afin d’ob
 Installer les outils nécessaires en root :
 
 apt update
+
 apt install -y sudo git
+
 usermod -aG sudo nom_utilisateur
 
 Reconnectez-vous ensuite avec votre utilisateur normal, puis clonez le dépôt et lancez le script :
 
 git clone https://github.com/Nexterius/Installation-n8n.git
+
 cd Installation-n8n
+
 chmod +x install_n8n.sh
+
 sudo ./install_n8n.sh
 
 ---
