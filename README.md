@@ -162,33 +162,45 @@ Le script crée l’environnement suivant :
 
 # 🌐 Accès à n8n
 
-## Port exposé sur le serveur
+## Port utilisé par n8n sur le serveur
 
-Le conteneur n8n expose le port suivant :
+Le conteneur n8n écoute sur le port 5678
 
-5678
+Cela signifie que, sur le serveur, n8n fonctionne bien sur ce port.
 
-Vous pouvez donc y accéder depuis le réseau local avec :
+## Accès recommandé : tunnel SSH
 
-http://IP_DU_SERVEUR:5678
-
-Exemple :
-
-http://192.168.1.10:5678
-
-## Accès conseillé via tunnel SSH
-
-Le script rappelle également l’utilisation d’un tunnel SSH :
+L’accès recommandé se fait via un tunnel SSH :
 
 ssh -L 8080:localhost:5678 utilisateur@ip_du_serveur
 
-Puis accéder à n8n depuis votre machine locale via :
+Une fois le tunnel SSH actif, l’unique URL à utiliser depuis votre machine locale est :
 
 http://localhost:8080
 
-> Le message final du script indique `http://localhost:8080`, mais n8n écoute en réalité sur le port `5678` côté serveur.
-> Le port `8080` correspond ici à l’usage du **tunnel SSH local**, pas à un port ouvert directement par Docker sur le serveur.
+## Important
 
+En utilisant le tunnel SSH, c’est **http://localhost:8080** qui doit être utilisé dans le navigateur.
+
+Même si n8n tourne sur le port `5678` sur le serveur, ce port est redirigé localement vers le port `8080` de votre machine grâce au tunnel SSH.
+
+Autrement dit :
+
+- `5678` = port utilisé par n8n sur le serveur
+- `8080` = port local utilisé sur votre PC via le tunnel SSH
+
+## Exemple
+
+Après avoir lancé :
+
+ssh -L 8080:localhost:5678 utilisateur@ip_du_serveur
+
+ouvrez ensuite uniquement :
+
+http://localhost:8080
+
+> Si vous utilisez le tunnel SSH, l’adresse `http://IP_DU_SERVEUR:5678` n’est pas celle à utiliser dans votre navigateur local.  
+> L’accès doit se faire via `http://localhost:8080`.
 ---
 
 # 🤖 Ollama
