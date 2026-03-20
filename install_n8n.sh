@@ -18,7 +18,7 @@ set -euo pipefail
 
 # Script complet d'installation N8N sur Debian 13
 
-# Version test - Production-not ready - non Testé et pas validé
+# Version test - Production-not ready - Testé et validé
 
 echo "🔄 Mise à jour et installation des prérequis "
 echo "======================================================================="
